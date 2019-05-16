@@ -19,10 +19,11 @@ def cepic(m):
         w = int(str(e[i])[-1]) + e[i] + i + 2
         e[i] = int(str(w)[0]) * w * (i+1)
 
-
+    l = []
     for i in range(24):
         a = e[i%8]
         b = e[(i+1)%8]
+        l.append(b)
         p = fun[i%3](a,b)
         e[(i+1)%8] = p
 
@@ -32,9 +33,21 @@ def cepic(m):
         nextBit = str(((inter >> i) ^ (e[i] << i)) % 10)
         final += nextBit
         inter = e[i]
+    return l
+    # return int(final)
 
-    return int(final)
+# for i in range(10):
+#     m = '0'*55 + str(i)
+#     print(m,cepic(m))
 
-# m = ‘’.join(str(random.randint(0,9)) for _ in range(56))
-m = '0'*55 + '4'
-print(m,cepic(m))
+# 0 (000) = 4 (100)
+# 1(001) = 6 (110)
+# 3 (011) = 7 (111)
+
+m = '0'*55 + '1'
+u = cepic(m)
+m = '0'*55 + '6'
+o = cepic(m)
+
+for i in range(len(u)):
+    print(u[i], o[i])
