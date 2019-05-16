@@ -3,33 +3,40 @@ import random
 import time
 from modInv import modinv
 import math
+from conversion import NumberToText, TextToNumber
 
+def generateKeys(initPrimes):
+    p,q = initPrimes
 
-initPrimes = [9013287591422353,20319995244432029]
+    b = (p-1)*(q-1)
 
-start = time.time()
+    n = p*q
+    e = 65537 # rel prime to b
 
-p,q = initPrimes
+    d = modinv(e,b) # d * e mod b = 1
 
-b = (p-1)*(q-1)
+    return [[e,n],d]
 
-n = p*q
-e = 65537 # rel prime to b
+def encode(message, e, n):
+    if message > n:
+        print('message too large')
+        return ''
+    else:
+        return pow(message, e, n)
 
-d = modinv(e,b) # d * e mod b = 1
+def decode(encoded, d, n):
+    return pow(mhat,d,n)
 
-stop = time.time()
+initPrimes = [7212610147295474909544523785043492409969382148186765460082500085393519556525921455588705423020751421,
+2908511952812557872434704820397229928450530253990158990550731991011846571635621025786879881561814989]
 
-m = random.randint(1,n) # anything < n
-mhat= pow(m,e,n)
-decode = pow(mhat,d,n)
+public, private = generateKeys(initPrimes)
+e,n = public
+d = private
 
+message = TextToNumber('b'*82)
 
-print(initPrimes)
-print('public key',e,n)
-print('private key',d)
-# print('time', stop-start)
-# print(decode == m)
-# print(m)
-# print(mhat)
-# print(decode)
+mhat = encode(message, e, n)
+
+if mhat != '':
+    print(NumberToText(decode(mhat, d, n)))
