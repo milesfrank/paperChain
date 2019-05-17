@@ -17,11 +17,17 @@ def cepic(m):
             b += int(m[j][i])
         e.append(b)
 
-    # for i in range(len(e)-1):
-    #     e[i] += e[-1]
-    #     e[i] = collatz(e[i], 4)
+    for i in range(8):
+        w = int(str(e[i])[-1]) + e[i] + i + 2
+        e[i] = int(str(w)[0]) * w * (i+1)
 
-    # print(e)
+    l = []
+    for i in range(24):
+        a = e[i%8]
+        b = e[(i+1)%8]
+        l.append(b)
+        p = fun[i%3](a,b)
+        e[(i+1)%8] = p
 
     inter = 0
     final = ''

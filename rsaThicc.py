@@ -1,40 +1,42 @@
 from primeStuff import relPrime, isPrime
 import random
 import time
+from modInv import modinv
+import math
+from conversion import NumberToText, TextToNumber
 
-# initPrimes = [7753, 7901]
-# initPrimes = [1153, 1217]
-initPrimes = []
+def generateKeys(initPrimes):
+    p,q = initPrimes
 
-start = time.time()
+    b = (p-1)*(q-1)
 
-while len(initPrimes) < 2:
-    b = random.randint(1000,8000)
-    if isPrime(b):
-        initPrimes.append(b)
+    n = p*q
+    e = 65537 # rel prime to b
 
-p,q = initPrimes
+    d = modinv(e,b) # d * e mod b = 1
 
-b = (p-1)*(q-1)
+    return [[e,n],d]
 
-n = p*q
-e = random.choice(relPrime(b)) # rel prime to b
+def encode(message, e, n):
+    if message > n:
+        print('message too large')
+        return ''
+    else:
+        return pow(message, e, n)
 
-d = 1# e mod b = 1
-while (d*e)%b != 1:
-    d += 1
+def decode(encoded, d, n):
+    return pow(mhat,d,n)
 
-stop = time.time()
+initPrimes = [7212610147295474909544523785043492409969382148186765460082500085393519556525921455588705423020751421,
+2908511952812557872434704820397229928450530253990158990550731991011846571635621025786879881561814989]
 
-# m = random.randint(1,n) # anything < n
+public, private = generateKeys(initPrimes)
+e,n = public
+d = private
 
-# mhat= (m**e)%n
+message = TextToNumber('b'*82)
 
-# decode = (mhat**d)%n
+mhat = encode(message, e, n)
 
-
-print(initPrimes)
-print('public key',e,n)
-print('private key',d)
-print('time', stop-start)
-# print('message', m)
+if mhat != '':
+    print(NumberToText(decode(mhat, d, n)))
