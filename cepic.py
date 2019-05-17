@@ -1,4 +1,6 @@
 import random
+from collections import Counter
+from collatz import collatz
 
 fun = [lambda a,b: a & b] + \
     [lambda a,b: a | b] + \
@@ -15,16 +17,11 @@ def cepic(m):
             b += int(m[j][i])
         e.append(b)
 
-    for i in range(8):
-        w = int(str(e[i])[-1]) + e[i] + i + 2
-        e[i] = int(str(w)[0]) * w * (i+1)
+    # for i in range(len(e)-1):
+    #     e[i] += e[-1]
+    #     e[i] = collatz(e[i], 4)
 
-
-    for i in range(24):
-        a = e[i%8]
-        b = e[(i+1)%8]
-        p = fun[i%3](a,b)
-        e[(i+1)%8] = p
+    # print(e)
 
     inter = 0
     final = ''
@@ -33,8 +30,18 @@ def cepic(m):
         final += nextBit
         inter = e[i]
 
-    return int(final)
+    return (final)
 
-# m = ‘’.join(str(random.randint(0,9)) for _ in range(56))
-m = '0'*55 + '4'
-print(m,cepic(m))
+c = []
+
+for i in range(100):
+    # m = ''.join(str(random.randint(0,9)) for _ in range(56))
+    m = '0'*(56-(len(str(i)))) + str(i)
+    c.append(cepic(m))
+
+cols = 0
+count = Counter(c)
+for i in count:
+    cols += count[i] - 1
+print(count)
+print(cols)
