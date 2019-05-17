@@ -50,29 +50,31 @@ def depic(m):
 
     final += getint(layer1[0], layer1[1])
 
+    print(layer1)
+    print(split(bin(int(layer1[0],2)^int(layer1[1],2))[2:]))
+
     layer2 = split(layer1[0]) + split(layer1[1]) + split(bin(int(layer1[0],2)^int(layer1[1],2))[2:])
 
     combine = [[0, 1], [2, 3], [4, 5], [0, 3], [1, 4], [2, 5]]
 
-    for i in combine:
+    print(layer2)
+
+    for i in combine:   
         final += getint(layer2[i[0]], layer2[i[1]])
 
     return final
 
 c = []
-for i in range(0, 10):
-    f = '0'*(56-len(str(i))) + str(i)
-    b = depic(f)
-    # if (i+1)%10000 == 0:
-        # print(int(b,2))
-    print(b)
-    c.append(b)
+# for i in range(0, 100000):
+#     f = '0'*(56-len(str(i))) + str(i)
+#     b = depic(f)
+#     c.append(b)
 
+depic('0'*53+'210')
 
 # collisions
-c = []
 cols = 0
 count = Counter(c)
 for i in count:
    cols += count[i] - 1
-# print(cols)
+print(cols)
