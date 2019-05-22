@@ -51,14 +51,11 @@ def depic(m):
         l1 = split(i)
         l2 = split(bin(int(l1[0],2) ^ int(l1[1],2))[2:])
         q[q.index(i)] = str(int(l1[0],2) ^ int(l1[1],2))
-        # print(i)
-        # print(l1)
-        # print(l2)
 
-    # print(q)
+    for i in q:
+        if len(i) == 1:
+            q[q.index(i)] = i + i
 
-    # final = q[0][0] + q[0][1] + q[1][-2] + q[1][-1] + q[2][0] + q[2][-1] + q[3][2]
-
-    final = q[0][0] + q[0][-1] + q[1][0] + q[1][-1] + q[2][0] + q[2][-1] + q[3][0] + q[3][-1]
+    final = q[0][0] + q[0][1] + q[1][-2] + q[1][-1] + q[2][0] + q[2][-1] + q[3][1] + q[3][-2]
 
     return final
