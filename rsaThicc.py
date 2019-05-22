@@ -34,9 +34,13 @@ public, private = generateKeys(initPrimes)
 e,n = public
 d = private
 
-message = TextToNumber('b'*82)
+print('public',e,n)
+print('private',d)
+
+message = TextToNumber('jz is a meme')
 
 mhat = encode(message, e, n)
 
-if mhat != '':
-    print(NumberToText(decode(mhat, d, n)))
+print('---')
+
+print(mhat)
