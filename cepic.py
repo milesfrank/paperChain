@@ -8,26 +8,19 @@ fun = [lambda a,b: a & b] + \
 
 def cepic(m):
     n = 8
-    m = [m[i:i+n] for i in range(0, len(m), n)]
+    m = [m[i:i+n] for i in range(0, len(m), n)] # chuncc
+    print(m)
     e=[]
 
     for i in range(8):
         b = 0
         for j in range(7):
             b += int(m[j][i])
-        e.append(b)
+        e.append(b**2)
 
-    for i in range(8):
+    for i in range(8): # mini bepic
         w = int(str(e[i])[-1]) + e[i] + i + 2
         e[i] = int(str(w)[0]) * w * (i+1)
-
-    l = []
-    for i in range(24):
-        a = e[i%8]
-        b = e[(i+1)%8]
-        l.append(b)
-        p = fun[i%3](a,b)
-        e[(i+1)%8] = p
 
     inter = 0
     final = ''

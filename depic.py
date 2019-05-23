@@ -1,5 +1,6 @@
 from collections import Counter
 import math
+import random
 
 def split(m):
    h = math.floor(len(m)/2)
@@ -35,29 +36,26 @@ def depic(m):
         b += int(i)
 
     for i in range(8): # add stuff
-        e[i] = e[i] + b + i + 1
+        e[i] = e[i] + b + i + 1 # add sum of nonce, position, and 1
 
     q = '' # convert to binary
     for i in e:
         q+=bin(i)[2:]
 
-    final = ''
+    a, b = split(split(q)[0])
+    c, d = split(split(q)[1])
 
-    final += str(int(q,2))[-2]
+    q = [a+b,b+c,c+d,d+a]
 
-    layer1 = split(q)
+    for i in q:
+        l1 = split(i)
+        print(l1)
+        q[q.index(i)] = str(int(rightRotate(l1[0],1),2) ^ int(leftRotate(l1[1],1),2))
 
-    final += getint(layer1[0], layer1[1])
+    for i in q:
+        if len(i) == 1:
+            q[q.index(i)] = i + i
 
-    layer2 = split(layer1[0]) + split(layer1[1]) + split(bin(int(layer1[0],2)^int(layer1[1],2))[2:])
-    # print(layer1, layer2)
-
-    combine = [[0, 1], [2, 3], [4, 5], [0, 3], [1, 4], [2, 5]]
-
-    for i in combine:
-        for j in range(2):
-            if(layer2[i[j]]==''):
-                layer2[i[j]] = '0'
-        final += getint(layer2[i[0]], layer2[i[1]])
+    final = q[0][0] + q[0][1] + q[1][-2] + q[1][-1] + q[2][0] + q[2][-1] + q[3][1] + q[3][-2]
 
     return final
