@@ -10,11 +10,17 @@ for i in range(0, 100000):
    #  print(b)
     c.append(b)
 
-# # collisions
+t = [[],[],[],[],[],[],[],[]]
+
+# for i in c:
+#    for j in range(8):
+#       t[j].append(i[j])
+
+# for i in t:
+#    print(Counter(i))
+
 cols = 0
 count = Counter(c)
 for i in count:
    cols += count[i] - 1
 print(cols)
-
-# print(depic('18135928045066397601407902506027075012944460791487977771'))

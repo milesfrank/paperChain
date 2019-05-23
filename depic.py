@@ -7,13 +7,13 @@ def split(m):
    s = [m[0:h], m[h:]]
    return s
 
-def leftRotate(x, n): # input x as string
-    out = x[n:] + x[:n]
-    return int(out,2)
+def leftRotate(message, amount): # input message as string
+    out = message[amount:] + message[:amount]
+    return out
 
-def rightRotate(x, n): # input x as string
-    out = x[len(x)-n:] + x[:len(x)-n]
-    return int(out,2)
+def rightRotate(message, amount): # input message as string
+    out = message[len(message)-amount:] + message[:len(message)-amount]
+    return out
 
 def getint(m1, m2): # input strings
     i1 = m1.count('1')
@@ -47,10 +47,12 @@ def depic(m):
 
     q = [a+b,b+c,c+d,d+a]
 
+    last = int(m[-1][-1])
+
     for i in q:
-        l1 = split(i)
-        l2 = split(bin(int(l1[0],2) ^ int(l1[1],2))[2:])
-        q[q.index(i)] = str(int(l1[0],2) ^ int(l1[1],2))
+        l1 = split(i) # layer 1
+        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))] # rotate 1
+        q[q.index(i)] = str(int(r1[0],2) ^ int(r1[1],2))
 
     for i in q:
         if len(i) == 1:
