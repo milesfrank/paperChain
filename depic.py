@@ -55,6 +55,9 @@ def depic(m):
     combine = [[0, 1], [2, 3], [4, 5], [0, 3], [1, 4], [2, 5]]
 
     for i in combine:
+        for j in range(2):
+            if(layer2[i[j]]==''):
+                layer2[i[j]] = '0'
         final += getint(layer2[i[0]], layer2[i[1]])
 
     return final
