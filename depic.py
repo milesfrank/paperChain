@@ -3,9 +3,11 @@ import math
 import random
 
 def split(m):
-   h = math.floor(len(m)/2)
-   s = [m[0:h], m[h:]]
-   return s
+    if len(m) == 1:
+        m = '0'+m
+    h = math.floor(len(m)/2)
+    s = [m[0:h], m[h:]]
+    return s
 
 def leftRotate(message, amount): # input message as string
     out = message[amount:] + message[:amount]
@@ -46,18 +48,28 @@ def depic(m):
     c, d = split(split(q)[1])
 
     q = [a+b,b+c,c+d,d+a]
+    new = []
 
     last = int(m[-1][-1])
 
     for i in q:
         l1 = split(i) # layer 1
         r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))] # rotate 1
-        q[q.index(i)] = str(int(r1[0],2) ^ int(r1[1],2))
+        xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
+        l2 = split(xor1)
+        r2 = [rightRotate(l2[0],last%len(l2[0])),leftRotate(l2[1],last%len(l2[1]))]
+        xor2 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
+        new.append(str(int(xor2,2)))
 
-    for i in q:
+
+    for i in new:
         if len(i) == 1:
-            q[q.index(i)] = i + i
+            new[new.index(i)] = i + i
 
-    final = q[0][0] + q[0][1] + q[1][-2] + q[1][-1] + q[2][0] + q[2][-1] + q[3][1] + q[3][-2]
+    final = new[0][0] + new[0][1] + new[1][-2] + new[1][-1] + new[2][0] + new[2][-1] + new[3][1] + new[3][-2]
 
     return final
+
+# depic('0'*55+'1')
+m = ''.join(str(random.randint(0,9)) for _ in range(56))
+depic(m)

@@ -12,9 +12,9 @@ for i in range(0, 100000):
 
 t = [[],[],[],[],[],[],[],[]]
 
-# for i in c:
-#    for j in range(8):
-#       t[j].append(i[j])
+for i in c:
+   for j in range(8):
+      t[j].append(i[j])
 
 # for i in t:
 #    print(Counter(i))
