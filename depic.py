@@ -3,17 +3,19 @@ import math
 import random
 
 def split(m):
-   h = math.floor(len(m)/2)
-   s = [m[0:h], m[h:]]
-   return s
+    if(len(m) == 1):
+        m = '0'+m
+    h = math.floor(len(m)/2)
+    s = [m[0:h], m[h:]]
+    return s
 
-def leftRotate(x, n): # input x as string
-    out = x[n:] + x[:n]
-    return int(out,2)
+def leftRotate(message, amount): # input message as string
+    out = message[amount:] + message[:amount]
+    return out
 
-def rightRotate(x, n): # input x as string
-    out = x[len(x)-n:] + x[:len(x)-n]
-    return int(out,2)
+def rightRotate(message, amount): # input message as string
+    out = message[len(message)-amount:] + message[:len(message)-amount]
+    return out
 
 def getint(m1, m2): # input strings
     i1 = m1.count('1')
@@ -47,14 +49,24 @@ def depic(m):
 
     q = [a+b,b+c,c+d,d+a]
 
+    last = int(m[-1][-1])
+
     for i in q:
-        l1 = split(i)
-        print(l1)
-        q[q.index(i)] = str(int(rightRotate(l1[0],1),2) ^ int(leftRotate(l1[1],1),2))
+        l1 = split(i) # layer 1
+        # print('l1', l1)
+        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))] # rotate 1
+        # print('r1',r1)
+        r2 = split(bin(int(r1[0],2) ^ int(r1[1],2))[2:])
+        # print('r2',r2)
+        fin = str(int(r2[0],2) ^ int(r2[1],2))
+        q[q.index(i)] = fin
+        # print('fin',fin)
 
     for i in q:
         if len(i) == 1:
-            q[q.index(i)] = i + i
+            dup = i + i
+            q[q.index(i)] = dup
+            # print(dup)
 
     final = q[0][0] + q[0][1] + q[1][-2] + q[1][-1] + q[2][0] + q[2][-1] + q[3][1] + q[3][-2]
 
