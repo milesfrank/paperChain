@@ -1,8 +1,4 @@
-from primeStuff import relPrime, isPrime
-import random
-import time
 from modInv import modinv
-import math
 from conversion import NumberToText, TextToNumber
 
 def generateKeys(initPrimes):

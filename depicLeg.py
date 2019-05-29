@@ -2,34 +2,28 @@ from collections import Counter
 import math
 import random
 
-def split(m):
-    if len(m) == 1:
-        m = '0'+m
-    h = math.floor(len(m)/2)
-    s = [m[0:h], m[h:]]
-    return s
+def split(message): # take a string of any length, return two strings of half the length. if length is odd, return the smaller number first. eg. message = 11001, out = [11,001] 
+    if len(message) == 1:
+        message = '0'+message # if the message is length 1, add a zero to the front. eg. if message = 1, message = 01
+    halfLength = math.floor(len(message)/2)
+    out = [message[0:halfLength], message[halfLength:]]
+    return out
 
-def leftRotate(message, amount): # input message as string
+def leftRotate(message, amount): # message = str, amount = int. eg. leftRotate(11001, 2) = 00111
     out = message[amount:] + message[:amount]
     return out
 
-def rightRotate(message, amount): # input message as string
+def rightRotate(message, amount): # message = str, amount = int. eg. rightRotate(11001, 2) = 01110
     out = message[len(message)-amount:] + message[:len(message)-amount]
     return out
 
-def getint(m1, m2): # input strings
-    i1 = m1.count('1')
-    i2 = m2.count('0')
-    return str(leftRotate(m1, i1) ^ rightRotate(m2, i2))[-1]
-
 def depic(m):
-    n = 8
-    m = [m[i:i+n] for i in range(0, len(m), n)] # chuncc
-    print(m)
-    e = []
+    m = [m[i:i+8] for i in range(0, len(m), 8)] # split 56 digit message into 7 8 digit chuncks
+
+    sumM = [] # list of the sum of the digits in the message
 
     for i in range(8): # split
-        b = 0
+        sum_ = 0
         for j in range(7):
             b += int(m[j][i])
         e.append(b)

@@ -1,5 +1,6 @@
 import time
 import binascii
+
 def convert(starting, ending, number):
     total = 0
     for i in range(0,len(number)):
