@@ -44,13 +44,16 @@ def depic(m):
     for i in e:
         q+=bin(i)[2:]
 
+    # print(e)
+
     a, b = split(split(q)[0])
     c, d = split(split(q)[1])
+    # print(a,b,c,d)
 
     q = [a+b,b+c,c+d,d+a]
 
     last = int(m[-1][-1])
-
+    # print(q)
     for i in q:
         l1 = split(i) # layer 1
         # print('l1', l1)
@@ -64,10 +67,11 @@ def depic(m):
 
     for i in q:
         if len(i) == 1:
-            dup = i + i
+            dup = i + str(int(i)+last+1)
             q[q.index(i)] = dup
             # print(dup)
 
-    final = q[0][0] + q[0][1] + q[1][-2] + q[1][-1] + q[2][0] + q[2][-1] + q[3][1] + q[3][-2]
+    # print(q)
+    final = q[0][0] + q[1][0] + q[2][0] + q[3][0] + q[0][1] + q[1][1] + q[2][1] + q[3][1]
 
     return final
