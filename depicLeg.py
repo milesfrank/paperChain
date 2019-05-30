@@ -2,7 +2,7 @@ from collections import Counter
 import math
 import random
 
-def split(message): # take a string of any length, return two strings of half the length. if length is odd, return the smaller number first. eg. message = 11001, out = [11,001] 
+def split(message): # returns a list of the first half of message, and the second half of message. if length is odd, return the smaller number first. eg. message = 11001, out = [11,001] 
     if len(message) == 1:
         message = '0'+message # if the message is length 1, add a zero to the front. eg. if message = 1, message = 01
     halfLength = math.floor(len(message)/2)
@@ -20,47 +20,52 @@ def rightRotate(message, amount): # message = str, amount = int. eg. rightRotate
 def depic(m):
     m = [m[i:i+8] for i in range(0, len(m), 8)] # split 56 digit message into 7 8 digit chuncks
 
-    sumM = [] # list of the sum of the digits in the message
+    sumList = [] # list of the sum of the digits in the message
 
-    for i in range(8): # split
-        sum_ = 0
-        for j in range(7):
-            b += int(m[j][i])
-        e.append(b)
+    # sum all the nth digits
+    for i in range(8): # for the ith number
+        summ = 0
+        for j in range(7): # for each chunck in m
+            summ += int(m[j][i]) # add the ith digit in the jth chunk to sum
+        sumList.append(summ)
 
-    b = 0
+    nonceSum = 0
     for i in m[-1]: # sum nonce
-        b += int(i)
+        nonceSum += int(i)
 
-    for i in range(8): # add stuff
-        e[i] = e[i] + b + i + 1 # add sum of nonce, position, and 1
+    for i in range(8):
+        sumList[i] = sumList[i] + nonceSum + i + 1 # for each value in sumList, add sum of nonce, position, and 1 to it
 
-    q = '' # convert to binary
-    for i in e:
-        q+=bin(i)[2:]
+    binSums = ''
+    for summ in sumList:
+        binSums+=bin(summ)[2:] # convert each sum in sumList to binary, and add it onto binSums
 
-    a, b = split(split(q)[0])
-    c, d = split(split(q)[1])
+    # create q1,q2,q3,q4 which are all a quarter of binSums
+    q1, q2 = split(split(binSums)[0]) 
+    q3, q4 = split(split(binSums)[1])
 
-    q = [a+b,b+c,c+d,d+a]
-    new = []
+    a = q1+q2
+    b = q2+q3
+    c = q3+q4
+    d = q4+q1
 
-    last = int(m[-1][-1])
+    finalChunks = []
 
-    for i in q:
-        l1 = split(i) # layer 1
-        # print('l1', l1)
-        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))] # rotate 1
-        xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
-        l2 = split(xor1)
-        r2 = [rightRotate(l2[0],last%len(l2[0])),leftRotate(l2[1],last%len(l2[1]))]
-        xor2 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
-        new.append(str(int(xor2,2)))
+    last = int(m[-1][-1]) # last number of the nonce
+
+    for i in [a,b,c,d]: # loop through a,b,c,d
+        s1 = split(i) # split i to create s1
+        r1 = [leftRotate(s1[0],last%len(s1[0])),rightRotate(s1[1],last%len(s1[1]))] # left rotate the first item of s1 by 'last' mod the length of the first item, and right rotate the second item of s1 by 'last' mod the length of the second item
+        xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:] # xor the two rotated ammounts
+        s2 = split(xor1) # repeat
+        r2 = [rightRotate(s2[0],last%len(s2[0])),leftRotate(s2[1],last%len(s2[1]))] # ^^
+        xor2 = bin(int(r1[0],2) ^ int(r1[1],2))[2:] # ^^
+        finalChunks.append(str(int(xor2,2))) # add the final value in decimal for
 
 
-    for i in new:
+    for i in finalChunks: # if the length of one of the final chunks is one, 
         if len(i) == 1:
-            new[new.index(i)] = i + i
+            finalChunks[finalChunks.index(i)] = i + i
 
     final = new[0][0] + new[0][1] + new[1][-2] + new[1][-1] + new[2][0] + new[2][-1] + new[3][1] + new[3][-2]
 
