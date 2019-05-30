@@ -1,6 +1,4 @@
-from collections import Counter
 import math
-import random
 
 def split(message): # returns a list of the first half of message, and the second half of message. if length is odd, return the smaller number first. eg. message = 11001, out = [11,001] 
     if len(message) == 1:
