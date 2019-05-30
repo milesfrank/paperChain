@@ -4,7 +4,7 @@ from collections import Counter
 
 c = []
 
-for i in range(0, 1):
+for i in range(0, 100000):
     # m = '0'*(56-len(str(i))) + str(i)
     m = ''.join(str(random.randint(0,9)) for _ in range(48)) + '00000001'
     c.append(depic(m))

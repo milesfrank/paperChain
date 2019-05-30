@@ -67,10 +67,6 @@ def depic(m):
             dup = i + str(int(i)+last+1)
             finalChunks[finalChunks.index(i)] = dup
 
-    print(finalChunks)
-
-    final = finalChunks[0][0] + finalChunks[0][1] + finalChunks[1][-2] + finalChunks[1][-1] + finalChunks[2][0] + finalChunks[2][-1] + finalChunks[3][1] + finalChunks[3][-2]
-
-    # final = finalChunks[0][0] + finalChunks[1][0] + finalChunks[2][0] + finalChunks[3][0] + finalChunks[0][1] + finalChunks[1][1] + finalChunks[2][1] + finalChunks[3][1]
+    final = finalChunks[0][0] + finalChunks[1][0] + finalChunks[2][0] + finalChunks[3][0] + finalChunks[0][-1] + finalChunks[1][-1] + finalChunks[2][-1] + finalChunks[3][-1]
 
     return final
