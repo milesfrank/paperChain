@@ -25,7 +25,6 @@ def getint(m1, m2): # input strings
 def depic(m):
     n = 8
     m = [m[i:i+n] for i in range(0, len(m), n)] # chuncc
-    print(m)
     e = []
 
     for i in range(8): # split
@@ -45,29 +44,32 @@ def depic(m):
     for i in e:
         q+=bin(i)[2:]
 
+    # print(e)
+
     a, b = split(split(q)[0])
     c, d = split(split(q)[1])
+    # print(a,b,c,d)
 
     q = [a+b,b+c,c+d,d+a]
-    new = []
 
     last = int(m[-1][-1])
-
+    # print(q)
     for i in q:
         l1 = split(i) # layer 1
-        # print('l1', l1)
-        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))] # rotate 1
-        xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
-        l2 = split(xor1)
-        r2 = [rightRotate(l2[0],last%len(l2[0])),leftRotate(l2[1],last%len(l2[1]))]
-        xor2 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
-        new.append(str(int(xor2,2)))
+        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))]
+        r2 = split(bin(int(r1[0],2) ^ int(r1[1],2))[2:])
+        fin = str(int(r2[0],2) ^ int(r2[1],2))
+        q[q.index(i)] = fin
 
 
-    for i in new:
+    for i in q:
         if len(i) == 1:
-            new[new.index(i)] = i + i
+            dup = i + str(int(i)+last+1)
+            q[q.index(i)] = dup
 
-    final = new[0][0] + new[0][1] + new[1][-2] + new[1][-1] + new[2][0] + new[2][-1] + new[3][1] + new[3][-2]
+    # print(q)
+    final = q[0][0] + q[1][0] + q[2][0] + q[3][0] + q[0][1] + q[1][1] + q[2][1] + q[3][1]
 
     return final
+
+print(depic('0'*56))

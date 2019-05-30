@@ -59,14 +59,18 @@ def depic(m):
         xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:] # xor the two rotated ammounts
         s2 = split(xor1) # repeat
         r2 = [rightRotate(s2[0],last%len(s2[0])),leftRotate(s2[1],last%len(s2[1]))] # ^^
-        xor2 = bin(int(r1[0],2) ^ int(r1[1],2))[2:] # ^^
+        xor2 = bin(int(r2[0],2) ^ int(r2[1],2))[2:] # ^^
         finalChunks.append(str(int(xor2,2))) # add the final value in decimal for
 
-
-    for i in finalChunks: # if the length of one of the final chunks is one, 
+    for i in finalChunks:
         if len(i) == 1:
-            finalChunks[finalChunks.index(i)] = i + i
+            dup = i + str(int(i)+last+1)
+            finalChunks[finalChunks.index(i)] = dup
 
-    final = new[0][0] + new[0][1] + new[1][-2] + new[1][-1] + new[2][0] + new[2][-1] + new[3][1] + new[3][-2]
+    print(finalChunks)
+
+    final = finalChunks[0][0] + finalChunks[0][1] + finalChunks[1][-2] + finalChunks[1][-1] + finalChunks[2][0] + finalChunks[2][-1] + finalChunks[3][1] + finalChunks[3][-2]
+
+    # final = finalChunks[0][0] + finalChunks[1][0] + finalChunks[2][0] + finalChunks[3][0] + finalChunks[0][1] + finalChunks[1][1] + finalChunks[2][1] + finalChunks[3][1]
 
     return final
