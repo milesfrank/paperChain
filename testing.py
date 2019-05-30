@@ -22,9 +22,9 @@ print([m[i:i+8] for i in range(0, len(m), 8)],depic(m))
 
 # t = [[],[],[],[],[],[],[],[]]
 
-# for i in c:
-#    for j in range(8):
-#       t[j].append(i[j])
+for i in c:
+   for j in range(8):
+      t[j].append(i[j])
 
 # for i in t:
 #    print(Counter(i))
