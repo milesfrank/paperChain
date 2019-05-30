@@ -52,26 +52,22 @@ def depic(m):
     # print(a,b,c,d)
 
     q = [a+b,b+c,c+d,d+a]
-    new = []
 
     last = int(m[-1][-1])
     # print(q)
     for i in q:
         l1 = split(i) # layer 1
-        # print('l1', l1)
-        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))] # rotate 1
-        xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
-        l2 = split(xor1)
-        r2 = [rightRotate(l2[0],last%len(l2[0])),leftRotate(l2[1],last%len(l2[1]))]
-        xor2 = bin(int(r1[0],2) ^ int(r1[1],2))[2:]
-        new.append(str(int(xor2,2)))
+        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))]
+        r2 = split(bin(int(r1[0],2) ^ int(r1[1],2))[2:])
+        fin = str(int(r2[0],2) ^ int(r2[1],2))
+        q[q.index(i)] = fin
 
 
-    for i in new:
+    for i in q:
         if len(i) == 1:
             dup = i + str(int(i)+last+1)
             q[q.index(i)] = dup
-            # print(dup)
+            print(dup)
 
     # print(q)
     final = q[0][0] + q[1][0] + q[2][0] + q[3][0] + q[0][1] + q[1][1] + q[2][1] + q[3][1]
