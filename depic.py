@@ -1,75 +1,75 @@
-from collections import Counter
 import math
-import random
 
-def split(m):
-    if len(m) == 1:
-        m = '0'+m
-    h = math.floor(len(m)/2)
-    s = [m[0:h], m[h:]]
-    return s
+def split(message): # returns a list of the first half of message, and the second half of message. if length is odd, return the smaller number first. eg. message = 11001, out = [11,001] 
+    if len(message) == 1:
+        message = '0'+message # if the message is length 1, add a zero to the front. eg. if message = 1, message = 01
+    halfLength = math.floor(len(message)/2)
+    out = [message[0:halfLength], message[halfLength:]]
+    return out
 
-def leftRotate(message, amount): # input message as string
+def leftRotate(message, amount): # message = str, amount = int. eg. leftRotate(11001, 2) = 00111
     out = message[amount:] + message[:amount]
     return out
 
-def rightRotate(message, amount): # input message as string
+def rightRotate(message, amount): # message = str, amount = int. eg. rightRotate(11001, 2) = 01110
     out = message[len(message)-amount:] + message[:len(message)-amount]
     return out
 
-def getint(m1, m2): # input strings
-    i1 = m1.count('1')
-    i2 = m2.count('0')
-    return str(leftRotate(m1, i1) ^ rightRotate(m2, i2))[-1]
-
 def depic(m):
-    n = 8
-    m = [m[i:i+n] for i in range(0, len(m), n)] # chuncc
-    e = []
+    m = [m[i:i+8] for i in range(0, len(m), 8)] # split 56 digit message into 7 8 digit chuncks
 
-    for i in range(8): # split
-        b = 0
-        for j in range(7):
-            b += int(m[j][i])
-        e.append(b)
+    sumList = [] # list of the sum of the digits in the message
 
-    b = 0
+    # sum all the nth digits
+    for i in range(8): # for the ith number
+        summ = 0
+        for j in range(7): # for each chunck in m
+            summ += int(m[j][i]) # add the ith digit in the jth chunk to sum
+        sumList.append(summ)
+
+    nonceSum = 0
     for i in m[-1]: # sum nonce
-        b += int(i)
+        nonceSum += int(i)
 
-    for i in range(8): # add stuff
-        e[i] = e[i] + b + i + 1 # add sum of nonce, position, and 1
+    for i in range(8):
+        sumList[i] = sumList[i] + nonceSum + i + 1 # for each value in sumList, add sum of nonce, position, and 1 to it
 
-    q = '' # convert to binary
-    for i in e:
-        q+=bin(i)[2:]
+    binSums = ''
+    for summ in sumList:
+        binSums+=bin(summ)[2:] # convert each sum in sumList to binary, and add it onto binSums
 
-    # print(e)
+    # create q1,q2,q3,q4 which are all a quarter of binSums
+    q1, q2 = split(split(binSums)[0]) 
+    q3, q4 = split(split(binSums)[1])
 
-    a, b = split(split(q)[0])
-    c, d = split(split(q)[1])
-    # print(a,b,c,d)
+    a = q1+q2
+    b = q2+q3
+    c = q3+q4
+    d = q4+q1
 
-    q = [a+b,b+c,c+d,d+a]
+    finalChunks = []
 
-    last = int(m[-1][-1])
-    # print(q)
-    for i in q:
-        l1 = split(i) # layer 1
-        r1 = [leftRotate(l1[0],last%len(l1[0])),rightRotate(l1[1],last%len(l1[1]))]
-        r2 = split(bin(int(r1[0],2) ^ int(r1[1],2))[2:])
-        fin = str(int(r2[0],2) ^ int(r2[1],2))
-        q[q.index(i)] = fin
+    last = int(m[-1][-1]) # last number of the nonce
 
+    for i in [a,b,c,d]: # loop through a,b,c,d
+        s1 = split(i) # split i to create s1
+        r1 = [leftRotate(s1[0],last%len(s1[0])),rightRotate(s1[1],last%len(s1[1]))] # left rotate the first item of s1 by 'last' mod the length of the first item, and right rotate the second item of s1 by 'last' mod the length of the second item
+        xor1 = bin(int(r1[0],2) ^ int(r1[1],2))[2:] # xor the two rotated ammounts
+        s2 = split(xor1) # repeat
+        r2 = [rightRotate(s2[0],last%len(s2[0])),leftRotate(s2[1],last%len(s2[1]))] # ^^
+        xor2 = bin(int(r2[0],2) ^ int(r2[1],2))[2:] # ^^
+        finalChunks.append(str(int(xor2,2))) # add the final value in decimal for
 
-    for i in q:
+    for i in finalChunks:
         if len(i) == 1:
-            dup = i + str(int(i)+last+1)
-            q[q.index(i)] = dup
+            pad = str(int(i)+last+1)
+            paddedChunk = i + pad
+            finalChunks[finalChunks.index(i)] = paddedChunk
 
-    # print(q)
-    final = q[0][0] + q[1][0] + q[2][0] + q[3][0] + q[0][1] + q[1][1] + q[2][1] + q[3][1]
+    print(finalChunks)
+
+    final = finalChunks[0][0] + finalChunks[1][0] + finalChunks[2][0] + finalChunks[3][0] + finalChunks[0][-1] + finalChunks[1][-1] + finalChunks[2][-1] + finalChunks[3][-1]
+
+    print(final)
 
     return final
-
-print(depic('0'*56))
