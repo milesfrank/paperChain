@@ -66,10 +66,6 @@ def depic(m):
             paddedChunk = i + pad
             finalChunks[finalChunks.index(i)] = paddedChunk
 
-    print(finalChunks)
-
     final = finalChunks[0][0] + finalChunks[1][0] + finalChunks[2][0] + finalChunks[3][0] + finalChunks[0][-1] + finalChunks[1][-1] + finalChunks[2][-1] + finalChunks[3][-1]
-
-    print(final)
 
     return final

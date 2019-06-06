@@ -1,4 +1,4 @@
-from depicLeg import depic
+from depic import depic
 import random
 from collections import Counter
 
